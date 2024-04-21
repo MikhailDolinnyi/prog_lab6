@@ -19,11 +19,13 @@ import java.time.LocalDateTime;
  * Класс реализующий работу с файлами
  */
 public class FileManager {
+    private final String file_path;
     private String text;
     private final Printable console;
     private final Gson gson;
     private final CollectionManager collectionManager;
     static final Logger fileManagerLogger = LogManager.getLogger(FileManager.class);
+
 
     /**
      * В конструкторе задаются алиасы для библиотеки Gson
@@ -31,9 +33,10 @@ public class FileManager {
      * @param console           Пользовательский ввод-вывод
      * @param collectionManager Работа с коллекцией
      */
-    public FileManager(Printable console, CollectionManager collectionManager) {
+    public FileManager(Printable console, CollectionManager collectionManager, String file_path) {
         this.console = console;
         this.collectionManager = collectionManager;
+        this.file_path = file_path;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).setPrettyPrinting()
                 .create();
@@ -46,7 +49,7 @@ public class FileManager {
      * @throws ExitException если путь - null или отсутствует программа заканчивает выполнение
      */
     public void findFile() throws ExitException {
-        String file_path = System.getenv("file_path");
+//        String file_path = System.getenv("file_path");
         if (file_path == null || file_path.isEmpty()) {
             console.printError("Путь должен быть в переменных окружения в переменной 'file_path'");
             fileManagerLogger.fatal("Нет пути в переменных окружения");
@@ -136,7 +139,7 @@ public class FileManager {
      * Сохраняем коллекцию из менеджера в файл
      */
     public void saveObjects() {
-        String file_path = System.getenv("file_path");
+
         if (file_path == null || file_path.isEmpty()) {
             console.printError("Путь должен быть в переменных окружения в переменной 'file_path'");
             fileManagerLogger.fatal("Отсутствует путь в переменных окружения");

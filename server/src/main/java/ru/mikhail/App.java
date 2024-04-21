@@ -26,15 +26,17 @@ public class App extends Thread {
     }
 
     public static void main(String[] args) {
-
-        if (args.length != 0) {
-            try {
-                PORT = Integer.parseInt(args[0]);
-            } catch (NumberFormatException ignored) {
-            }
-        }
         CollectionManager collectionManager = new CollectionManager();
-        FileManager fileManager = new FileManager(console, collectionManager);
+        FileManager fileManager;
+
+        if (args.length > 0 && args[0] != null && !args[0].isEmpty()) {
+            // Первый аргумент командной строки используется в качестве пути к файлу
+            fileManager = new FileManager(consoleOutput, collectionManager, args[0]);
+        } else {
+            consoleOutput.printError("Лее,друже, необходимо указать путь к файлу в качестве аргумента командной строки.");
+            return;
+        }
+
         // мб фиксить нужно
         try {
             App.rootLogger.info("Создание объектов");
@@ -54,7 +56,17 @@ public class App extends Thread {
                 new AddElement(consoleOutput,collectionManager),
                 new AddIfMin(consoleOutput,collectionManager),
                 new Clear(consoleOutput,collectionManager),
-                new ExecuteScript(consoleOutput,fileManager,commandManager)
+                new ExecuteScript(consoleOutput,fileManager,commandManager),
+                new Exit(),
+                new History(commandManager),
+                new Info(collectionManager),
+                new UpdateId(consoleOutput,collectionManager),
+                new RemoveById(consoleOutput,collectionManager),
+                new AverageOfHeight(consoleOutput,collectionManager),
+                new PrintAsceding(consoleOutput,collectionManager),
+                new RemoveAllByWeaponType(consoleOutput,collectionManager),
+                new RemoveHead(consoleOutput,collectionManager),
+                new RemoveLower(consoleOutput,collectionManager)
 
         ));
         App.rootLogger.debug("Создан объект менеджера команд");

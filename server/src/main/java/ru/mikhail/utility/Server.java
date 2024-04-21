@@ -20,6 +20,8 @@ public class Server {
 
     static final Logger serverLogger = LogManager.getLogger(Server.class);
 
+
+
     public Server(int port, RequestHandler handler, FileManager fileManager) {
         this.port = port;
         this.console = new PrintConsole();
@@ -33,6 +35,8 @@ public class Server {
         try {
             DatagramSocket serverSocket = new DatagramSocket(port);
             serverLogger.info("Сервер запущен на порту " + port);
+
+
 
 
 
