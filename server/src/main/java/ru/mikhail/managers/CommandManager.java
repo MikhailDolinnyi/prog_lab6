@@ -1,7 +1,6 @@
 package ru.mikhail.managers;
 
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.mikhail.commands.CollectionEditor;

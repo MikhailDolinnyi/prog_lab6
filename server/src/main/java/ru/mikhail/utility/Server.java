@@ -3,7 +3,6 @@ package ru.mikhail.utility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.mikhail.managers.FileManager;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 
@@ -21,23 +20,17 @@ public class Server {
     static final Logger serverLogger = LogManager.getLogger(Server.class);
 
 
-
-    public Server(int port, RequestHandler handler, FileManager fileManager) {
+    public Server(int port, RequestHandler handler) {
         this.port = port;
         this.console = new PrintConsole();
         this.requestHandler = handler;
     }
 
-//    public void saveCollection(FileManager fileManager) {
-//        fileManager.saveObjects(); // Предполагается, что объект fileManager инициализирован где-то
-//    }
+
     public void run() {
         try {
             DatagramSocket serverSocket = new DatagramSocket(port);
             serverLogger.info("Сервер запущен на порту " + port);
-
-
-
 
 
             while (true) {
@@ -65,7 +58,6 @@ public class Server {
                 DatagramPacket sendPacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
                 serverSocket.send(sendPacket);
                 serverLogger.info("Отправлен ответ клиенту: " + responseToUser);
-
 
 
                 os.close();

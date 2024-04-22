@@ -11,9 +11,9 @@ public class Request implements Serializable {
     private String args = "";
     private SpaceMarine object = null;
 
-//    public Request(ResponseStatus ok, String commandName, SpaceMarine help) {
-//        this.commandName = commandName.trim();
-//    }
+    //    public Request(ResponseStatus ok, String commandName, SpaceMarine help) {
+    //        this.commandName = commandName.trim();
+    //    }
 
     public Request(String commandName, String args) {
         this.commandName = commandName.trim();

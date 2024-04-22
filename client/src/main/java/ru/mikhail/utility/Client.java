@@ -31,17 +31,7 @@ public class Client {
             InetAddress serverAddress = InetAddress.getByName(host);
 
             // Создание сокета без указания локального порта
-            DatagramSocket socket = new DatagramSocket();
-
-            DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
-            socket.send(sendPacket);
-
-            byte[] receivingDataBuffer = new byte[5096];
-            DatagramPacket receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
-            socket.receive(receivePacket);
-
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(receivePacket.getData());
-            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(inputStream));
+            ObjectInputStream is = getObjectInputStream(requestData, serverAddress);
 
             Response response = (Response) is.readObject();
 
@@ -54,6 +44,20 @@ public class Client {
             console.printError("Ошибка при отправке запроса или получении ответа: " + e.getMessage());
             return new Response(ResponseStatus.ERROR, "Ошибка при отправке запроса или получении ответа");
         }
+    }
+
+    private ObjectInputStream getObjectInputStream(byte[] requestData, InetAddress serverAddress) throws IOException {
+        DatagramSocket socket = new DatagramSocket();
+
+        DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
+        socket.send(sendPacket);
+
+        byte[] receivingDataBuffer = new byte[5096];
+        DatagramPacket receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
+        socket.receive(receivePacket);
+
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(receivePacket.getData());
+        return new ObjectInputStream(new BufferedInputStream(inputStream));
     }
 
 }

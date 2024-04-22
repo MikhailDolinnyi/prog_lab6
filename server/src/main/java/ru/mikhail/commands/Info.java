@@ -13,7 +13,7 @@ import ru.mikhail.utility.OutputColors;
  * Выводит в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
  */
 public class Info extends Command {
-    private CollectionManager collectionManager;
+    private final CollectionManager collectionManager;
 
     public Info(CollectionManager collectionManager) {
         super("info", ": вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)");
@@ -32,10 +32,10 @@ public class Info extends Command {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
         String lastInitTime = (collectionManager.getLastInitTime() == null)
                 ? "В сессии коллекция не инициализирована"
-                : collectionManager.getLastInitTime().toString();
+                : collectionManager.getLastInitTime();
         String lastSaveTime = (collectionManager.getLastSaveTime() == null)
                 ? "В сессии коллекция не инициализирована "
-                : collectionManager.getLastSaveTime().toString();
+                : collectionManager.getLastSaveTime();
         String stringBuilder = "Сведения о коллекции: \n" +
                 OutputColors.toColor("Тип: ", OutputColors.GREEN) + collectionManager.collectionType() + "\n" +
                 OutputColors.toColor("Количество элементов: ", OutputColors.GREEN) + collectionManager.collectionSize() + "\n" +

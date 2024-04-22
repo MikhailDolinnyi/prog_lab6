@@ -1,11 +1,11 @@
 package ru.mikhail.managers;
 
 
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.PriorityQueue;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.mikhail.exceptions.InvalidFormException;
@@ -38,7 +38,7 @@ public class CollectionManager {
         return collection;
     }
 
-    public static void updateId(Collection<SpaceMarine> collection){
+    public static void updateId(Collection<SpaceMarine> collection) {
         nextId = collection.stream()
                 .filter(Objects::nonNull)
                 .map(SpaceMarine::getId)
@@ -47,19 +47,21 @@ public class CollectionManager {
         collectionManagerLogger.info("Обновлен айди на " + nextId);
     }
 
-    public static Long getNextId(){
+    public static Long getNextId() {
         return ++nextId;
     }
+
+
     public String getLastInitTime() {
-        if (lastInitTime !=null){
+        if (lastInitTime != null) {
             return lastInitTime.toString();
         }
         return null;
     }
 
     public String getLastSaveTime() {
-        if(lastSaveTime != null){
-        return lastSaveTime.toString();
+        if (lastSaveTime != null) {
+            return lastSaveTime.toString();
         }
         return null;
     }
@@ -77,6 +79,7 @@ public class CollectionManager {
 
     public void clear() {
         this.collection.clear();
+        nextId = 0L;
         lastInitTime = LocalDateTime.now();
     }
 

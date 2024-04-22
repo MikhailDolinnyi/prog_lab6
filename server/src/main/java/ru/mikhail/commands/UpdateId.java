@@ -7,7 +7,6 @@ import ru.mikhail.managers.CollectionManager;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
-import ru.mikhail.utility.ConsoleOutput;
 
 import java.util.Objects;
 
@@ -17,12 +16,10 @@ import java.util.Objects;
  */
 public class UpdateId extends Command {
     private final CollectionManager collectionManager;
-    private final ConsoleOutput consoleOutput;
 
-    public UpdateId(ConsoleOutput consoleOutput, CollectionManager collectionManager) {
+    public UpdateId(CollectionManager collectionManager) {
         super("update", " id {element}: обновить значение элемента коллекции, id которого равен заданному");
         this.collectionManager = collectionManager;
-        this.consoleOutput = consoleOutput;
     }
 
     /**
@@ -32,23 +29,23 @@ public class UpdateId extends Command {
      * @throws IllegalArgumentsException неверные аргументы команды
      */
     @Override
-    public Response execute(Request request) throws IllegalArgumentsException{
+    public Response execute(Request request) throws IllegalArgumentsException {
         if (request.getArgs().isBlank()) throw new IllegalArgumentsException();
-        class NoSuchId extends RuntimeException{
+        class NoSuchId extends RuntimeException {
 
         }
         try {
             int id = Integer.parseInt(request.getArgs().trim());
-            if (!collectionManager.checkExist((long)id)) throw new NoSuchId();
-            if (Objects.isNull(request.getObject())){
+            if (!collectionManager.checkExist((long) id)) throw new NoSuchId();
+            if (Objects.isNull(request.getObject())) {
                 return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
             }
-            collectionManager.editById((long)id, request.getObject());
+            collectionManager.editById((long) id, request.getObject());
             return new Response(ResponseStatus.OK, "Объект успешно обновлен");
         } catch (NoSuchId err) {
-            return new Response(ResponseStatus.ERROR,"В коллекции нет элемента с таким id");
+            return new Response(ResponseStatus.ERROR, "В коллекции нет элемента с таким id");
         } catch (NumberFormatException exception) {
-            return new Response(ResponseStatus.ERROR,"id должно быть числом типа int");
+            return new Response(ResponseStatus.ERROR, "id должно быть числом типа int");
         } catch (InvalidFormException e) {
             throw new RuntimeException(e);
         }

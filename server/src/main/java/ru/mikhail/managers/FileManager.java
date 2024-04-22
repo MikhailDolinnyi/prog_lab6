@@ -49,7 +49,7 @@ public class FileManager {
      * @throws ExitException если путь - null или отсутствует программа заканчивает выполнение
      */
     public void findFile() throws ExitException {
-//        String file_path = System.getenv("file_path");
+
         if (file_path == null || file_path.isEmpty()) {
             console.printError("Путь должен быть в переменных окружения в переменной 'file_path'");
             fileManagerLogger.fatal("Нет пути в переменных окружения");
@@ -111,29 +111,6 @@ public class FileManager {
         SpaceMarine.updateId(collectionManager.getCollection());
     }
 
-
-//    public void createObjects() throws ExitException {
-//        Gson gson = new Gson();
-//        try {
-//            SpaceMarine[] spaceMarines = gson.fromJson(this.text, SpaceMarine[].class);
-//            for (SpaceMarine spaceMarine : spaceMarines) {
-//                if (this.collectionManager.checkExist(spaceMarine.getId())) {
-//                    console.printError("В файле повторяются айди!");
-//                    fileManagerLogger.fatal("В файле повторяются айди!");
-//                    throw new ExitException();
-//                }
-//                if (!spaceMarine.validate()) throw new InvalidFormException();
-//                this.collectionManager.addElement(spaceMarine);
-//                fileManagerLogger.info("Добавлен объект: " + spaceMarine);
-//            }
-//        } catch (InvalidFormException invalidForm) {
-//            console.printError("Объекты в файле не валидны");
-//            fileManagerLogger.fatal("Объекты в файле не валидны");
-//            throw new ExitException();
-//        }
-//        console.println("Получены объекты:\n" + collectionManager.getCollection().toString());
-//        CollectionManager.updateId(collectionManager.getCollection());
-//    }
 
     /**
      * Сохраняем коллекцию из менеджера в файл

@@ -53,26 +53,26 @@ public class App extends Thread {
         commandManager.addCommand(List.of(
                 new Help(commandManager),
                 new Show(collectionManager),
-                new AddElement(consoleOutput,collectionManager),
-                new AddIfMin(consoleOutput,collectionManager),
-                new Clear(consoleOutput,collectionManager),
-                new ExecuteScript(consoleOutput,fileManager,commandManager),
+                new AddElement(collectionManager),
+                new AddIfMin(collectionManager),
+                new Clear(collectionManager),
+                new ExecuteScript(),
                 new Exit(),
                 new History(commandManager),
                 new Info(collectionManager),
-                new UpdateId(consoleOutput,collectionManager),
-                new RemoveById(consoleOutput,collectionManager),
-                new AverageOfHeight(consoleOutput,collectionManager),
-                new PrintAsceding(consoleOutput,collectionManager),
-                new RemoveAllByWeaponType(consoleOutput,collectionManager),
-                new RemoveHead(consoleOutput,collectionManager),
-                new RemoveLower(consoleOutput,collectionManager)
+                new UpdateId(collectionManager),
+                new RemoveById(collectionManager),
+                new AverageOfHeight(collectionManager),
+                new PrintAsceding(collectionManager),
+                new RemoveAllByWeaponType(collectionManager),
+                new RemoveHead(collectionManager),
+                new RemoveLower(collectionManager)
 
         ));
         App.rootLogger.debug("Создан объект менеджера команд");
         RequestHandler requestHandler = new RequestHandler(commandManager);
         App.rootLogger.debug("Создан объект обработчика запросов");
-        Server server = new Server(PORT, requestHandler, fileManager);
+        Server server = new Server(PORT, requestHandler);
         App.rootLogger.debug("Создан объект сервера");
 
         new Thread(() -> {

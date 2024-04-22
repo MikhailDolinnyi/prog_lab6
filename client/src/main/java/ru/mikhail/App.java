@@ -1,10 +1,6 @@
 package ru.mikhail;
 
 
-
-
-
-
 import ru.mikhail.commandLine.ConsoleOutput;
 import ru.mikhail.commandLine.Printable;
 import ru.mikhail.exceptions.IllegalArgumentsException;
@@ -18,13 +14,13 @@ public class App {
     private static int port;
     private static Printable console = new ConsoleOutput();
 
-    public static boolean parseHostPort(String[] args){
-        try{
-            if(args.length != 2) throw new IllegalArgumentsException("Передайте хост и порт в аргументы " +
+    public static boolean parseHostPort(String[] args) {
+        try {
+            if (args.length != 2) throw new IllegalArgumentsException("Передайте хост и порт в аргументы " +
                     "командной строки в формате <host> <port>");
             host = args[0];
             port = Integer.parseInt(args[1]);
-            if(port < 0) throw new IllegalArgumentsException("Порт должен быть натуральным числом");
+            if (port < 0) throw new IllegalArgumentsException("Порт должен быть натуральным числом");
             return true;
         } catch (IllegalArgumentsException e) {
             console.printError(e.getMessage());

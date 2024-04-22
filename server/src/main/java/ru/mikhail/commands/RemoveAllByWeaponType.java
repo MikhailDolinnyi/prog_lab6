@@ -1,7 +1,6 @@
 package ru.mikhail.commands;
 
 
-
 import ru.mikhail.exceptions.IllegalArgumentsException;
 import ru.mikhail.managers.CollectionManager;
 import ru.mikhail.models.SpaceMarine;
@@ -9,9 +8,7 @@ import ru.mikhail.models.Weapon;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
-import ru.mikhail.utility.ConsoleOutput;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -20,13 +17,11 @@ import java.util.Objects;
  * удаляет все элементы, значения поля weaponType которых эквивалентны заданному
  */
 public class RemoveAllByWeaponType extends Command {
-    private CollectionManager collectionManager;
-    private ConsoleOutput consoleOutput;
+    private final CollectionManager collectionManager;
 
-    public RemoveAllByWeaponType(ConsoleOutput consoleOutput, CollectionManager collectionManager) {
+    public RemoveAllByWeaponType(CollectionManager collectionManager) {
         super("remove_all_by_weapon_type", " weaponType: удалить все элементы" +
                 ", значения поля weaponType которых эквивалентны заданному");
-        this.consoleOutput = consoleOutput;
         this.collectionManager = collectionManager;
 
     }
@@ -47,9 +42,9 @@ public class RemoveAllByWeaponType extends Command {
                     .filter(studyGroup -> studyGroup.getWeaponType() == weaponType)
                     .toList();
             collectionManager.removeElements(toRemove);
-            return new Response(ResponseStatus.OK,"Удалены элементы с таким average_mark");
+            return new Response(ResponseStatus.OK, "Удалены элементы с таким average_mark");
         } catch (NumberFormatException exception) {
-            return new Response(ResponseStatus.ERROR,"average_mark должно быть числом типа long");
+            return new Response(ResponseStatus.ERROR, "average_mark должно быть числом типа long");
         }
     }
 

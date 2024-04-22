@@ -1,5 +1,23 @@
 {
-  "collection": [],
-  "lastInitTime": "2024-04-21T20:06:31.4496671",
-  "lastSaveTime": "2024-04-21T20:06:13.7727229"
+  "collection": [
+    {
+      "id": 1,
+      "name": "537",
+      "coordinates": {
+        "x": 357.0,
+        "y": 35.0
+      },
+      "creationDate": "2024-04-22T23:33:08.8458655",
+      "health": 735,
+      "achievements": "7",
+      "height": 4,
+      "weaponType": "HEAVY_FLAMER",
+      "chapter": {
+        "name": "5",
+        "marinesCount": 6
+      }
+    }
+  ],
+  "lastInitTime": "2024-04-22T23:33:05.5970047",
+  "lastSaveTime": "2024-04-22T23:33:15.4899961"
 }

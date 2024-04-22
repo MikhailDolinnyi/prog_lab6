@@ -37,7 +37,7 @@ public class Show extends Command {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
         Collection<SpaceMarine> collection = collectionManager.getCollection();
         if (collection == null || collection.isEmpty()) {
-            return new Response(ResponseStatus.ERROR,"Коллекция еще не инициализирована");
+            return new Response(ResponseStatus.ERROR, "Коллекция еще не инициализирована");
         }
         return new Response(ResponseStatus.OK, "Коллекция: ", collection);
     }

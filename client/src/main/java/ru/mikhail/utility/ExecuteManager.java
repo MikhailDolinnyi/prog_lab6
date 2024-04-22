@@ -31,8 +31,8 @@ public class ExecuteManager extends ConsoleInput {
         pathQueue.pop();
     }
 
-    public static void popRecursion(){
-        if(!pathQueue.isEmpty()) {
+    public static void popRecursion() {
+        if (!pathQueue.isEmpty()) {
             pathQueue.pop();
         }
     }
@@ -40,7 +40,6 @@ public class ExecuteManager extends ConsoleInput {
     public static boolean fileRepeat(String path) {
         return pathQueue.contains(new File(path).getAbsolutePath());
     }
-
 
 
 }

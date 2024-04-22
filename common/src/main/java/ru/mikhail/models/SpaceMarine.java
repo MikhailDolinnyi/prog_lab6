@@ -1,7 +1,6 @@
 package ru.mikhail.models;
 
 
-
 import ru.mikhail.utility.OutputColors;
 
 import java.io.Serializable;

@@ -1,26 +1,22 @@
 package ru.mikhail.commands;
 
 
-
 import ru.mikhail.exceptions.IllegalArgumentsException;
 import ru.mikhail.managers.CollectionManager;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
-import ru.mikhail.utility.ConsoleOutput;
 
 /**
  * Команда 'remove_by_id'
  * Удаляет элемент из коллекции по его id
  */
 public class RemoveById extends Command {
-    private CollectionManager collectionManager;
-    private ConsoleOutput consoleOutput;
+    private final CollectionManager collectionManager;
 
-    public RemoveById(ConsoleOutput consoleOutput, CollectionManager collectionManager) {
+    public RemoveById(CollectionManager collectionManager) {
         super("remove_by_id", " id: удалить элемент из коллекции по его id");
         this.collectionManager = collectionManager;
-        this.consoleOutput = consoleOutput;
     }
 
     /**
@@ -36,13 +32,13 @@ public class RemoveById extends Command {
         }
         try {
             int id = Integer.parseInt(request.getArgs().trim());
-            if (!collectionManager.checkExist((long)id)) throw new NoSuchId();
-            collectionManager.removeElement(collectionManager.getById((long)id));
-            return new Response(ResponseStatus.OK,"Объект удален успешно");
+            if (!collectionManager.checkExist((long) id)) throw new NoSuchId();
+            collectionManager.removeElement(collectionManager.getById((long) id));
+            return new Response(ResponseStatus.OK, "Объект удален успешно");
         } catch (NoSuchId err) {
-            return new Response(ResponseStatus.ERROR,"В коллекции нет элемента с таким id");
+            return new Response(ResponseStatus.ERROR, "В коллекции нет элемента с таким id");
         } catch (NumberFormatException exception) {
-            return new Response(ResponseStatus.WRONG_ARGUMENTS,"id должно быть числом типа int");
+            return new Response(ResponseStatus.WRONG_ARGUMENTS, "id должно быть числом типа int");
         }
     }
 }

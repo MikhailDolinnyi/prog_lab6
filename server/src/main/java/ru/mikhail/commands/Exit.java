@@ -19,7 +19,6 @@ public class Exit extends Command {
      * Исполнить команду
      *
      * @param request аргументы команды
-     *
      */
     @Override
     public Response execute(Request request) throws IllegalArgumentsException {
