@@ -1,15 +1,14 @@
 package ru.mikhail.managers;
 
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.PriorityQueue;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.mikhail.exceptions.InvalidFormException;
 import ru.mikhail.models.SpaceMarine;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.PriorityQueue;
 
 /**
  * Класс, организующий работу с коллекцией
@@ -17,7 +16,6 @@ import ru.mikhail.models.SpaceMarine;
 public class CollectionManager {
     private final PriorityQueue<SpaceMarine> collection = new PriorityQueue<>();
 
-    private static Long nextId = 0L;
     /**
      * Дата создания коллекции
      */
@@ -37,19 +35,15 @@ public class CollectionManager {
     public PriorityQueue<SpaceMarine> getCollection() {
         return collection;
     }
-
-    public static void updateId(Collection<SpaceMarine> collection) {
-        nextId = collection.stream()
-                .filter(Objects::nonNull)
-                .map(SpaceMarine::getId)
-                .max(Long::compareTo)
-                .orElse(0L);
-        collectionManagerLogger.info("Обновлен айди на " + nextId);
-    }
-
-    public static Long getNextId() {
-        return ++nextId;
-    }
+//
+//    public static void updateId(Collection<SpaceMarine> collection) {
+//        nextId = collection.stream()
+//                .filter(Objects::nonNull)
+//                .map(SpaceMarine::getId)
+//                .max(Long::compareTo)
+//                .orElse(0L);
+//        collectionManagerLogger.info("Обновлен айди на " + nextId);
+//    }
 
 
     public String getLastInitTime() {
@@ -79,7 +73,6 @@ public class CollectionManager {
 
     public void clear() {
         this.collection.clear();
-        nextId = 0L;
         lastInitTime = LocalDateTime.now();
     }
 
@@ -128,6 +121,7 @@ public class CollectionManager {
     public void addElement(SpaceMarine spaceMarine) throws InvalidFormException {
         this.lastSaveTime = LocalDateTime.now();
         if (!spaceMarine.validate()) throw new InvalidFormException();
+        spaceMarine.setId(getLastId() + 1);
         collection.add(spaceMarine);
     }
 
@@ -138,9 +132,8 @@ public class CollectionManager {
         }
     }
 
-    public boolean removeElement(SpaceMarine spaceMarine) {
+    public void removeElement(SpaceMarine spaceMarine) {
         collection.remove(spaceMarine);
-        return false;
     }
 
 
@@ -160,4 +153,12 @@ public class CollectionManager {
         }
         return info.toString();
     }
+
+    public Long getLastId() {
+        return getCollection().stream()
+                .mapToLong(SpaceMarine::getId)
+                .max()
+                .orElse(0L);
+    }
 }
+

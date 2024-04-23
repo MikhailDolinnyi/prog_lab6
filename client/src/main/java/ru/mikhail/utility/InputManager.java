@@ -59,7 +59,9 @@ public class InputManager {
                             console.printError(newResponse.getResponse());
                         } else {
                             this.printResponse(newResponse);
+
                         }
+
                     }
                     case EXIT -> throw new ExitException();
                     case EXECUTE_SCRIPT -> {

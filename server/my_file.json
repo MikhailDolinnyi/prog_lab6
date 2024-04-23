@@ -1,23 +1,40 @@
 {
   "collection": [
     {
-      "id": 1,
-      "name": "54",
+      "id": 2,
+      "name": "4",
       "coordinates": {
-        "x": 734.0,
-        "y": 734.0
+        "x": 73.0,
+        "y": 73.0
       },
-      "creationDate": "2024-04-23T17:24:50.0675783",
-      "health": 734,
-      "achievements": "7356",
-      "height": 3,
-      "weaponType": "HEAVY_FLAMER",
+      "creationDate": "2024-04-23T21:28:19.8434787",
+      "health": 73,
+      "achievements": "473",
+      "height": 7,
+      "weaponType": "GRAV_GUN",
       "chapter": {
         "name": "3",
-        "marinesCount": 5
+        "marinesCount": 7
+      }
+    },
+    {
+      "id": 1,
+      "name": "53",
+      "coordinates": {
+        "x": 73.0,
+        "y": 735.0
+      },
+      "creationDate": "2024-04-23T20:19:57.966171",
+      "health": 7357,
+      "achievements": "537",
+      "height": 8,
+      "weaponType": "GRAV_GUN",
+      "chapter": {
+        "name": "4",
+        "marinesCount": 7
       }
     }
   ],
-  "lastInitTime": "2024-04-23T17:24:47.050089",
-  "lastSaveTime": "2024-04-23T17:24:56.2131438"
+  "lastInitTime": "2024-04-23T21:28:10.1813728",
+  "lastSaveTime": "2024-04-23T21:28:23.7229455"
 }

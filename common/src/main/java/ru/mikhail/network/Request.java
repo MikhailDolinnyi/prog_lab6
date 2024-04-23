@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Request implements Serializable {
     private final String commandName;
     private String args = "";
-    private SpaceMarine object = null;
+    private SpaceMarine object;
 
     //    public Request(ResponseStatus ok, String commandName, SpaceMarine help) {
     //        this.commandName = commandName.trim();

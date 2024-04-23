@@ -4,7 +4,6 @@ package ru.mikhail.commands;
 import ru.mikhail.exceptions.IllegalArgumentsException;
 import ru.mikhail.exceptions.InvalidFormException;
 import ru.mikhail.managers.CollectionManager;
-import ru.mikhail.models.SpaceMarine;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
@@ -36,11 +35,6 @@ public class AddElement extends Command {
         if (Objects.isNull(request.getObject())) {
             return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
         } else {
-            long id = collectionManager.getCollection().stream()
-                    .mapToLong(SpaceMarine::getId)
-                    .max()
-                    .orElse(0L);
-            request.getObject().setId(id+1);
             collectionManager.addElement(request.getObject());
             return new Response(ResponseStatus.OK, "Объект успешно добавлен");
         }
