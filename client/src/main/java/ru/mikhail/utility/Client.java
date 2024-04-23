@@ -37,7 +37,7 @@ public class Client {
 
             is.close();
             os.close();
-//            socket.close(); // Закрытие сокета после использования
+            outputStream.close();
 
             return response;
         } catch (IOException | ClassNotFoundException e) {
@@ -47,14 +47,16 @@ public class Client {
     }
 
     private ObjectInputStream getObjectInputStream(byte[] requestData, InetAddress serverAddress) throws IOException {
-        DatagramSocket socket = new DatagramSocket();
+        DatagramPacket receivePacket;
+        try (DatagramSocket socket = new DatagramSocket()) {
 
-        DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
-        socket.send(sendPacket);
+            DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
+            socket.send(sendPacket);
 
-        byte[] receivingDataBuffer = new byte[5096];
-        DatagramPacket receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
-        socket.receive(receivePacket);
+            byte[] receivingDataBuffer = new byte[5096];
+            receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
+            socket.receive(receivePacket);
+        }
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(receivePacket.getData());
         return new ObjectInputStream(new BufferedInputStream(inputStream));

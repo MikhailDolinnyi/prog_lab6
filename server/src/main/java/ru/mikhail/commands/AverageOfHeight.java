@@ -24,7 +24,7 @@ public class AverageOfHeight extends Command {
     public Response execute(Request request) throws IllegalArgumentsException {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
 
-//        double averageHeight = Double.parseDouble(request.getArgs().trim());
+
         return new Response(ResponseStatus.OK, "Среднее значение роста во всех элементах " + collectionManager.getCollection().stream()
                 .mapToDouble(SpaceMarine::getHeight)
                 .average()

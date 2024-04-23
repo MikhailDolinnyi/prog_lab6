@@ -27,7 +27,7 @@ public class SpaceMarine implements FieldValidator, Comparable<SpaceMarine>, Ser
     private Weapon weaponType; //Поле не может быть null
     private Chapter chapter; //Поле может быть null
 
-    private static Long nextId = 0L;
+    private static Long nextId = 1L;
 
 
     public SpaceMarine(String name, Coordinates coordinates, LocalDateTime creationDate, int health, String achievements, Long height, Weapon weaponType,
