@@ -18,8 +18,9 @@ import java.util.Objects;
 public class AddElement extends Command {
     private final CollectionManager collectionManager;
 
+
     public AddElement(CollectionManager collectionManager) {
-        super("add", " {element}: добавить новый элемент в коллекцию");
+        super("add", " {element} : добавить новый элемент в коллекцию");
         this.collectionManager = collectionManager;
     }
 
@@ -33,10 +34,15 @@ public class AddElement extends Command {
     public Response execute(Request request) throws IllegalArgumentsException, InvalidFormException {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
         if (Objects.isNull(request.getObject())) {
-            return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
-        } else {
-            collectionManager.addElement(request.getObject());
-            return new Response(ResponseStatus.OK, "Объект успешно добавлен");
-        }
+            return new Response(ResponseStatus.OK);}
+        else{
+        collectionManager.addElement(request.getObject());}
+
+        return new Response(ResponseStatus.OK, "Объект успешно добавлен");
+//        if (Objects.isNull(request.getObject())) {
+//            return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
+//        } else {
+//
+//        }
     }
 }

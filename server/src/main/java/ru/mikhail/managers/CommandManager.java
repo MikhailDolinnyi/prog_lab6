@@ -9,10 +9,7 @@ import ru.mikhail.exceptions.*;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -53,8 +50,14 @@ public class CommandManager {
 
     }
 
+
     public Collection<Command> getCommands() {
         return commands.values();
+    }
+
+    public Set<String> getCommandsNames() {
+        return commands.keySet();
+
     }
 
     public void addToHistory(String line) {

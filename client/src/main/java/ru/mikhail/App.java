@@ -14,6 +14,7 @@ public class App {
     private static int port;
     private static Printable console = new ConsoleOutput();
 
+
     public static boolean parseHostPort(String[] args) {
         try {
             if (args.length != 2) throw new IllegalArgumentsException("Передайте хост и порт в аргументы " +

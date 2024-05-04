@@ -1,8 +1,9 @@
 package ru.mikhail.utility;
 
 
+import ru.mikhail.asks.AskSpaceMarine;
 import ru.mikhail.commandLine.ConsoleOutput;
-import ru.mikhail.commandLine.asks.AskSpaceMarine;
+import ru.mikhail.commandLine.Printable;
 import ru.mikhail.exceptions.ExitException;
 import ru.mikhail.exceptions.FIleFieldException;
 import ru.mikhail.exceptions.InvalidFormException;
@@ -11,15 +12,11 @@ import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Scanner;
-
-import ru.mikhail.commandLine.Printable;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -30,11 +27,17 @@ public class InputManager {
     private final Scanner userScanner;
     private final Client client;
 
+
+
     public InputManager(Printable console, Scanner userScanner, Client client) {
         this.console = console;
         this.userScanner = userScanner;
         this.client = client;
     }
+
+        List<String> commandList = Arrays.stream(new String[]{"add", "add_if_min", "update"})
+            .collect(Collectors.toList());
+
 
     /**
      * Перманентная работа с пользователем и выполнение команд
@@ -43,7 +46,25 @@ public class InputManager {
         while (true) {
             try {
                 if (!userScanner.hasNext()) throw new ExitException();
+
                 String[] userCommand = (userScanner.nextLine().trim() + " ").split(" ", 2); // прибавляем пробел, чтобы split выдал два элемента в массиве
+                for (String command : commandList) {
+                    if (Objects.equals(userCommand[0], command)) {
+                        SpaceMarine spaceMarine = new AskSpaceMarine(console).build();
+                        if (!spaceMarine.validate()) throw new InvalidFormException();
+                        Response newResponse = client.sendAndAskResponse(
+                                new Request(
+                                        userCommand[0].trim(),
+                                        userCommand[1].trim(),
+                                        spaceMarine));
+                        if (newResponse.getStatus() != ResponseStatus.OK) {
+                            console.printError(newResponse.getResponse());
+                        } else {
+                            this.printResponse(newResponse);
+
+                        }
+                    }
+                }
                 Response response = client.sendAndAskResponse(new Request(userCommand[0].trim(), userCommand[1].trim()));
                 this.printResponse(response);
                 switch (response.getStatus()) {
@@ -63,6 +84,7 @@ public class InputManager {
                         }
 
                     }
+
                     case EXIT -> throw new ExitException();
                     case EXECUTE_SCRIPT -> {
                         ConsoleOutput.setFileMode(true);

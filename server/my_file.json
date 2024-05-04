@@ -1,40 +1,74 @@
 {
   "collection": [
     {
-      "id": 2,
-      "name": "4",
+      "id": 1,
+      "name": "24727",
       "coordinates": {
-        "x": 73.0,
-        "y": 73.0
+        "x": 46.0,
+        "y": 864.0
       },
-      "creationDate": "2024-04-23T21:28:19.8434787",
-      "health": 73,
-      "achievements": "473",
-      "height": 7,
+      "creationDate": "2024-05-03T21:03:47.4499072",
+      "health": 8,
+      "achievements": "48",
+      "height": 9,
+      "weaponType": "HEAVY_FLAMER",
+      "chapter": {
+        "name": "5",
+        "marinesCount": 6
+      }
+    },
+    {
+      "id": 2,
+      "name": "3",
+      "coordinates": {
+        "x": 5.0,
+        "y": 37.0
+      },
+      "creationDate": "2024-05-03T21:03:23.5190176",
+      "health": 357,
+      "achievements": "537",
+      "height": 9,
       "weaponType": "GRAV_GUN",
       "chapter": {
-        "name": "3",
+        "name": "5",
         "marinesCount": 7
       }
     },
     {
-      "id": 1,
+      "id": 3,
       "name": "53",
       "coordinates": {
-        "x": 73.0,
-        "y": 735.0
+        "x": 7835.0,
+        "y": 7853.0
       },
-      "creationDate": "2024-04-23T20:19:57.966171",
-      "health": 7357,
-      "achievements": "537",
-      "height": 8,
+      "creationDate": "2024-04-30T11:00:27.1623637",
+      "health": 8,
+      "achievements": "5",
+      "height": 9,
       "weaponType": "GRAV_GUN",
       "chapter": {
-        "name": "4",
+        "name": "8",
+        "marinesCount": 8
+      }
+    },
+    {
+      "id": 4,
+      "name": "53",
+      "coordinates": {
+        "x": 785.0,
+        "y": 38.0
+      },
+      "creationDate": "2024-05-03T20:32:17.182851",
+      "health": 38,
+      "achievements": "58",
+      "height": 9,
+      "weaponType": "GRAV_GUN",
+      "chapter": {
+        "name": "5",
         "marinesCount": 7
       }
     }
   ],
-  "lastInitTime": "2024-04-23T21:28:10.1813728",
-  "lastSaveTime": "2024-04-23T21:28:23.7229455"
+  "lastInitTime": "2024-05-04T23:13:39.3957071",
+  "lastSaveTime": "2024-05-04T23:13:39.5584447"
 }

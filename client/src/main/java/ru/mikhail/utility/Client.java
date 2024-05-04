@@ -35,6 +35,7 @@ public class Client {
 
             Response response = (Response) is.readObject();
 
+
             is.close();
             os.close();
             outputStream.close();

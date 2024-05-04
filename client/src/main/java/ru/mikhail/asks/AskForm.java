@@ -1,4 +1,4 @@
-package ru.mikhail.commandLine.asks;
+package ru.mikhail.asks;
 
 
 import ru.mikhail.exceptions.InvalidFormException;

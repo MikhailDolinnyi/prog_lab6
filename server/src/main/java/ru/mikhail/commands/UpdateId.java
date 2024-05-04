@@ -38,7 +38,7 @@ public class UpdateId extends Command {
             int id = Integer.parseInt(request.getArgs().trim());
             if (!collectionManager.checkExist((long) id)) throw new NoSuchId();
             if (Objects.isNull(request.getObject())) {
-                return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
+                return new Response(ResponseStatus.OK);
             }
             collectionManager.editById((long) id, request.getObject());
             return new Response(ResponseStatus.OK, "Объект успешно обновлен");

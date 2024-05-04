@@ -35,7 +35,7 @@ public class AddIfMin extends Command {
     public Response execute(Request request) throws IllegalArgumentsException, InvalidFormException {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
         if (Objects.isNull(request.getObject())) {
-            return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
+            return new Response(ResponseStatus.OK);
         }
         if (request.getObject().compareTo(Objects.requireNonNull(collectionManager.getCollection().stream()
                 .filter(Objects::nonNull)

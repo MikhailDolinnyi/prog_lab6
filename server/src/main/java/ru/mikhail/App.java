@@ -11,6 +11,7 @@ import ru.mikhail.managers.FileManager;
 import ru.mikhail.utility.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class App extends Thread {
@@ -22,7 +23,11 @@ public class App extends Thread {
 
     private static String getUserInput() {
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().trim();
+        try {
+            return scanner.nextLine().trim();
+        } catch (NoSuchElementException e) {
+            return "";
+        }
     }
 
     public static void main(String[] args) {
@@ -87,7 +92,7 @@ public class App extends Thread {
         Runtime.getRuntime().addShutdownHook(new Thread(new AutoSaveHook(fileManager)));
 
 
-        server.run();
+        server.run(commandManager);
 
     }
 }
