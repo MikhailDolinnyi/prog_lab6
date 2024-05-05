@@ -33,14 +33,19 @@ public class Client {
             // Создание сокета без указания локального порта
             ObjectInputStream is = getObjectInputStream(requestData, serverAddress);
 
-            Response response = (Response) is.readObject();
+            try {
+                Response response = (Response) is.readObject();
 
 
-            is.close();
-            os.close();
-            outputStream.close();
+                is.close();
+                os.close();
+                outputStream.close();
 
-            return response;
+                return response;
+            } catch (EOFException e) {
+                console.printError("Данные не влезают в буфер на клиенте");
+                return new Response(ResponseStatus.ERROR, "Данные не влезают в буфер на клиенте");
+            }
         } catch (IOException | ClassNotFoundException e) {
             console.printError("Ошибка при отправке запроса или получении ответа: " + e.getMessage());
             return new Response(ResponseStatus.ERROR, "Ошибка при отправке запроса или получении ответа");
@@ -54,7 +59,7 @@ public class Client {
             DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
             socket.send(sendPacket);
 
-            byte[] receivingDataBuffer = new byte[5096];
+            byte[] receivingDataBuffer = new byte[10192];
             receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
             socket.receive(receivePacket);
         }

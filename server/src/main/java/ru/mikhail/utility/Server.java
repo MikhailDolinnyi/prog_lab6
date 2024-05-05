@@ -3,7 +3,6 @@ package ru.mikhail.utility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.mikhail.commands.Command;
 import ru.mikhail.managers.CommandManager;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
@@ -13,9 +12,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
 
 public class Server {
 
@@ -53,11 +49,10 @@ public class Server {
 //            serverLogger.info("Отправлен ответ клиенту: " + sendCommands);
 
 
-
             while (true) {
 
 
-                byte[] receivingDataBuffer = new byte[5096];
+                byte[] receivingDataBuffer = new byte[10192];
                 DatagramPacket receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
                 serverSocket.receive(receivePacket);
 
@@ -65,37 +60,78 @@ public class Server {
                 InetAddress clientAddress = receivePacket.getAddress();
                 int clientPort = receivePacket.getPort();
 
+//                byte[] data = receivePacket.getData();
+//                for (int i = 0; i < data.length; i++) {
+//                    if (data[i] == 0) {
+//                        // Нашли элемент равный 0, теперь можно создать новый буфер, обрезанный до этого индекса
+//                        byte[] newDataBuffer = Arrays.copyOf(receivingDataBuffer, i);
+//                        // Делайте что-то с newDataBuffer
+//                        break; // Выходим из цикла, т.к. нашли первый элемент равный 0
+//                    }
+//                }
+
+
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(receivePacket.getData());
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
 
-                Request userRequest = (Request) is.readObject();
-                serverLogger.info("Получен запрос от клиента: " + userRequest.getCommandName(), userRequest);
 
-                Response responseToUser = requestHandler.handle(userRequest);
-
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                ObjectOutputStream os = new ObjectOutputStream(outputStream);
-                os.writeObject(responseToUser);
-                os.flush();
-
-                byte[] responseData = outputStream.toByteArray();
+                try {
+                    Request userRequest = (Request) is.readObject();
 
 
-                DatagramPacket sendPacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
+                    Response responseToUser = requestHandler.handle(userRequest);
 
-                serverSocket.send(sendPacket);
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    ObjectOutputStream os = new ObjectOutputStream(outputStream);
+                    os.writeObject(responseToUser);
+                    os.flush();
+
+                    byte[] responseData = outputStream.toByteArray();
 
 
-                serverLogger.info("Отправлен ответ клиенту: " + responseToUser);
+                    DatagramPacket sendPacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
+
+                    serverSocket.send(sendPacket);
 
 
+                    serverLogger.info("Отправлен ответ клиенту: " + responseToUser);
 
-                os.close();
-                is.close();
+
+                    os.close();
+                    is.close();
+                } catch (EOFException e) {
+                    Response responseToUser = requestHandler.bufferError();
+
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    ObjectOutputStream os = new ObjectOutputStream(outputStream);
+                    os.writeObject(responseToUser);
+                    os.flush();
+
+                    byte[] responseData = outputStream.toByteArray();
+
+
+                    DatagramPacket sendPacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
+
+                    serverSocket.send(sendPacket);
+
+
+                    serverLogger.info("Отправлен ответ клиенту: " + responseToUser);
+
+
+                    os.close();
+                    is.close();
+
+
+                    serverLogger.error("Данные не влезают в буфер на сервере");
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
+
             console.printError("Произошла ошибка: " + e.getMessage());
+
             serverLogger.error("Произошла ошибка: " + e.getMessage());
+
+
         }
     }
 }

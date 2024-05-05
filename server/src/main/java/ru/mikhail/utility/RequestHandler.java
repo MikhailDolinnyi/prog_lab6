@@ -15,6 +15,12 @@ public class RequestHandler {
         this.commandManager = commandManager;
     }
 
+    public Response bufferError(){
+
+        return new Response(ResponseStatus.ERROR,
+                "Данные не влезают в буфер на сервере");
+    }
+
     public Response handle(Request request) {
         try {
             commandManager.addToHistory(request.getCommandName());
