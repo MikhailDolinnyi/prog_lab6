@@ -34,9 +34,6 @@ public class AddIfMin extends Command {
     @Override
     public Response execute(Request request) throws IllegalArgumentsException, InvalidFormException {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
-        if (Objects.isNull(request.getObject())) {
-            return new Response(ResponseStatus.OK);
-        }
         if (request.getObject().compareTo(Objects.requireNonNull(collectionManager.getCollection().stream()
                 .filter(Objects::nonNull)
                 .min(SpaceMarine::compareTo)

@@ -61,39 +61,47 @@ public class InputManager {
                             console.printError(newResponse.getResponse());
                         } else {
                             this.printResponse(newResponse);
-
                         }
+                        break;
+                    }
+                    else{
+                        Response response = client.sendAndAskResponse(new Request(userCommand[0].trim(), userCommand[1].trim()));
+                        this.printResponse(response);
+                        switch (response.getStatus()) {
+                            case ASK_OBJECT -> {
+                                SpaceMarine spaceMarine = new AskSpaceMarine(console).build();
+                                if (!spaceMarine.validate()) throw new InvalidFormException();
+                                Response newResponse = client.sendAndAskResponse(
+                                        new Request(
+                                                userCommand[0].trim(),
+                                                userCommand[1].trim(),
+                                                spaceMarine));
+                                if (newResponse.getStatus() != ResponseStatus.OK) {
+                                    console.printError(newResponse.getResponse());
+                                } else {
+                                    this.printResponse(newResponse);
+
+                                }
+
+                            }
+
+                            case EXIT -> throw new ExitException();
+                            case EXECUTE_SCRIPT -> {
+                                ConsoleOutput.setFileMode(true);
+                                this.fileExecution(response.getResponse());
+                                ConsoleOutput.setFileMode(false);
+                            }
+                            default -> {
+                            }
+                        }
+
+
+                        break;
+
                     }
                 }
-                Response response = client.sendAndAskResponse(new Request(userCommand[0].trim(), userCommand[1].trim()));
-                this.printResponse(response);
-                switch (response.getStatus()) {
-                    case ASK_OBJECT -> {
-                        SpaceMarine spaceMarine = new AskSpaceMarine(console).build();
-                        if (!spaceMarine.validate()) throw new InvalidFormException();
-                        Response newResponse = client.sendAndAskResponse(
-                                new Request(
-                                        userCommand[0].trim(),
-                                        userCommand[1].trim(),
-                                        spaceMarine));
-                        if (newResponse.getStatus() != ResponseStatus.OK) {
-                            console.printError(newResponse.getResponse());
-                        } else {
-                            this.printResponse(newResponse);
 
-                        }
 
-                    }
-
-                    case EXIT -> throw new ExitException();
-                    case EXECUTE_SCRIPT -> {
-                        ConsoleOutput.setFileMode(true);
-                        this.fileExecution(response.getResponse());
-                        ConsoleOutput.setFileMode(false);
-                    }
-                    default -> {
-                    }
-                }
             } catch (InvalidFormException err) {
                 console.printError("Поля не валидны! Объект не создан");
             } catch (NoSuchElementException exception) {

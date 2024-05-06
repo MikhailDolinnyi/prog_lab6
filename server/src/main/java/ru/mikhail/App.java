@@ -92,7 +92,7 @@ public class App extends Thread {
         Runtime.getRuntime().addShutdownHook(new Thread(new AutoSaveHook(fileManager)));
 
 
-        server.run(commandManager);
+        server.run();
 
     }
 }

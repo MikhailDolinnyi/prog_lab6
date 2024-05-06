@@ -8,8 +8,6 @@ import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
 
-import java.util.Objects;
-
 
 /**
  * Команда 'add'
@@ -33,16 +31,9 @@ public class AddElement extends Command {
     @Override
     public Response execute(Request request) throws IllegalArgumentsException, InvalidFormException {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
-        if (Objects.isNull(request.getObject())) {
-            return new Response(ResponseStatus.OK);}
-        else{
-        collectionManager.addElement(request.getObject());}
 
+        collectionManager.addElement(request.getObject());
         return new Response(ResponseStatus.OK, "Объект успешно добавлен");
-//        if (Objects.isNull(request.getObject())) {
-//            return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
-//        } else {
-//
-//        }
+
     }
 }

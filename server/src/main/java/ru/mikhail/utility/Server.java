@@ -3,7 +3,6 @@ package ru.mikhail.utility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.mikhail.managers.CommandManager;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 
@@ -11,7 +10,6 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Arrays;
 
 public class Server {
 
@@ -29,46 +27,21 @@ public class Server {
     }
 
 
-    public void run(CommandManager commandManager) {
+    public void run() {
         try {
             DatagramSocket serverSocket = new DatagramSocket(port);
             serverLogger.info("Сервер запущен на порту " + port);
-
-//            Set commands = commandManager.getCommandsNames();
-//            String[] array = new String[commands.size()];
-//            commands.toArray(array);
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            ObjectOutputStream oos = new ObjectOutputStream(baos);
-//            // Сериализуем Set
-//            oos.writeObject(array);
-//            oos.flush();
-//            byte[] byteCommands = baos.toByteArray();
-//            DatagramPacket sendCommands = new DatagramPacket(byteCommands, byteCommands.length);
-//            serverSocket.send(sendCommands); // Отправляем пакет с командами клиенту
-//            serverLogger.info("Отправлен ответ клиенту: " + sendCommands);
-
 
             while (true) {
 
 
                 byte[] receivingDataBuffer = new byte[10192];
                 DatagramPacket receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
-                serverSocket.receive(receivePacket);
 
+                serverSocket.receive(receivePacket);
 
                 InetAddress clientAddress = receivePacket.getAddress();
                 int clientPort = receivePacket.getPort();
-
-//                byte[] data = receivePacket.getData();
-//                for (int i = 0; i < data.length; i++) {
-//                    if (data[i] == 0) {
-//                        // Нашли элемент равный 0, теперь можно создать новый буфер, обрезанный до этого индекса
-//                        byte[] newDataBuffer = Arrays.copyOf(receivingDataBuffer, i);
-//                        // Делайте что-то с newDataBuffer
-//                        break; // Выходим из цикла, т.к. нашли первый элемент равный 0
-//                    }
-//                }
 
 
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(receivePacket.getData());

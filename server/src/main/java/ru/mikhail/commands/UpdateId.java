@@ -8,8 +8,6 @@ import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
 
-import java.util.Objects;
-
 /**
  * Команда 'update'
  * Обновляет значение элемента коллекции, id которого равен заданному
@@ -37,9 +35,6 @@ public class UpdateId extends Command {
         try {
             int id = Integer.parseInt(request.getArgs().trim());
             if (!collectionManager.checkExist((long) id)) throw new NoSuchId();
-            if (Objects.isNull(request.getObject())) {
-                return new Response(ResponseStatus.OK);
-            }
             collectionManager.editById((long) id, request.getObject());
             return new Response(ResponseStatus.OK, "Объект успешно обновлен");
         } catch (NoSuchId err) {
