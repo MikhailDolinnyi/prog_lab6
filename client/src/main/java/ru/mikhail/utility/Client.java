@@ -8,6 +8,7 @@ import ru.mikhail.network.ResponseStatus;
 
 import java.io.*;
 import java.net.*;
+import java.nio.ByteBuffer;
 
 public class Client {
     private final String host;
@@ -27,11 +28,11 @@ public class Client {
             os.writeObject(request);
             os.flush();
 
-            byte[] requestData = outputStream.toByteArray();
+            ByteBuffer requestData = ByteBuffer.wrap(outputStream.toByteArray());
             InetAddress serverAddress = InetAddress.getByName(host);
 
             // Создание сокета без указания локального порта
-            ObjectInputStream is = getObjectInputStream(requestData, serverAddress);
+            ObjectInputStream is = getObjectInputStream(requestData.array(), serverAddress);
 
             try {
                 Response response = (Response) is.readObject();
@@ -59,9 +60,17 @@ public class Client {
             DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
             socket.send(sendPacket);
 
-            byte[] receivingDataBuffer = new byte[10192];
-            receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
+            ByteBuffer receivingBuffer = ByteBuffer.allocate(1024);
+            receivePacket = new DatagramPacket(receivingBuffer.array(), receivingBuffer.capacity());
+
             socket.receive(receivePacket);
+
+            for (int i = 0; i < receivingBuffer.capacity(); i++) {
+                if (receivingBuffer.get(i) == 0 && receivingBuffer.get(i + 1) == 0 && receivingBuffer.get(i + 2) == 0) {
+                    receivePacket.setLength(i);
+                    break;
+                }
+            }
         }
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(receivePacket.getData());

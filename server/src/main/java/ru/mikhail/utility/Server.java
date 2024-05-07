@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 
 public class Server {
 
@@ -29,17 +30,24 @@ public class Server {
 
     public void run() {
         try {
+            DatagramPacket receivePacket;
             DatagramSocket serverSocket = new DatagramSocket(port);
             serverLogger.info("Сервер запущен на порту " + port);
 
+
             while (true) {
 
+                ByteBuffer receivingBuffer = ByteBuffer.allocate(1024);
 
-                byte[] receivingDataBuffer = new byte[10192];
-                DatagramPacket receivePacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
+                receivePacket = new DatagramPacket(receivingBuffer.array(), receivingBuffer.capacity());
 
                 serverSocket.receive(receivePacket);
-
+                for (int i = 0; i < receivingBuffer.capacity(); i++) {
+                    if (receivingBuffer.get(i) == 0 && receivingBuffer.get(i + 1) == 0 && receivingBuffer.get(i + 2) == 0) {
+                        receivePacket.setLength(i);
+                        break;
+                    }
+                }
                 InetAddress clientAddress = receivePacket.getAddress();
                 int clientPort = receivePacket.getPort();
 
@@ -59,10 +67,10 @@ public class Server {
                     os.writeObject(responseToUser);
                     os.flush();
 
-                    byte[] responseData = outputStream.toByteArray();
+                    ByteBuffer responseData = ByteBuffer.wrap(outputStream.toByteArray());
 
 
-                    DatagramPacket sendPacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
+                    DatagramPacket sendPacket = new DatagramPacket(responseData.array(), responseData.capacity(), clientAddress, clientPort);
 
                     serverSocket.send(sendPacket);
 
@@ -75,15 +83,16 @@ public class Server {
                 } catch (EOFException e) {
                     Response responseToUser = requestHandler.bufferError();
 
+
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     ObjectOutputStream os = new ObjectOutputStream(outputStream);
                     os.writeObject(responseToUser);
                     os.flush();
 
-                    byte[] responseData = outputStream.toByteArray();
+                    ByteBuffer responseData = ByteBuffer.wrap(outputStream.toByteArray());
 
 
-                    DatagramPacket sendPacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
+                    DatagramPacket sendPacket = new DatagramPacket(responseData.array(), responseData.capacity(), clientAddress, clientPort);
 
                     serverSocket.send(sendPacket);
 
@@ -106,5 +115,7 @@ public class Server {
 
 
         }
+
+
     }
 }
