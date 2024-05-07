@@ -37,7 +37,7 @@ public class Server {
 
             while (true) {
 
-                ByteBuffer receivingBuffer = ByteBuffer.allocate(1024);
+                ByteBuffer receivingBuffer = ByteBuffer.allocate(65_536);
 
                 receivePacket = new DatagramPacket(receivingBuffer.array(), receivingBuffer.capacity());
 

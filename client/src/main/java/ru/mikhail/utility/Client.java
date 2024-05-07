@@ -60,7 +60,7 @@ public class Client {
             DatagramPacket sendPacket = new DatagramPacket(requestData, requestData.length, serverAddress, port);
             socket.send(sendPacket);
 
-            ByteBuffer receivingBuffer = ByteBuffer.allocate(1024);
+            ByteBuffer receivingBuffer = ByteBuffer.allocate(65_536);
             receivePacket = new DatagramPacket(receivingBuffer.array(), receivingBuffer.capacity());
 
             socket.receive(receivePacket);
