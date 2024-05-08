@@ -22,6 +22,7 @@ public class Response implements Serializable {
         this.response = response.trim();
     }
 
+
     public Response(ResponseStatus status, String response, Collection<SpaceMarine> collection) {
         this.status = status;
         this.response = response.trim();
@@ -37,6 +38,7 @@ public class Response implements Serializable {
     public String getResponse() {
         return response;
     }
+
 
     public Collection<SpaceMarine> getCollection() {
         return collection;
