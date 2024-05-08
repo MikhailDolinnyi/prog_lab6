@@ -12,7 +12,7 @@ public class Add extends Command {
 
 
     public Add(Printable console) {
-        super("add", "создает");
+        super("add", "добавление элемента");
         this.console = console;
     }
 

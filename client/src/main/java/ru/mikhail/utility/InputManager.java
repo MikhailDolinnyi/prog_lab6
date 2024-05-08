@@ -1,15 +1,17 @@
 package ru.mikhail.utility;
 
 
-import ru.mikhail.asks.AskSpaceMarine;
 import ru.mikhail.commandLine.ConsoleOutput;
 import ru.mikhail.commandLine.Printable;
-import ru.mikhail.exceptions.*;
+import ru.mikhail.commands.CommandManager;
+import ru.mikhail.exceptions.ExitException;
+import ru.mikhail.exceptions.IllegalArgumentsException;
+import ru.mikhail.exceptions.InvalidFormException;
+import ru.mikhail.exceptions.NoCommandException;
 import ru.mikhail.models.SpaceMarine;
 import ru.mikhail.network.Request;
 import ru.mikhail.network.Response;
 import ru.mikhail.network.ResponseStatus;
-import ru.mikhail.commands.CommandManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -183,41 +185,31 @@ public class InputManager {
                 if (userCommand[0].equals("execute_script")) {
                     if (ExecuteManager.fileRepeat(userCommand[1])) {
                         console.printError("Найдена рекурсия по пути " + new File(userCommand[1]).getAbsolutePath());
-                        continue;
+
                     }
-                }
-                console.println(OutputColors.toColor("Выполнение команды " + userCommand[0], OutputColors.YELLOW));
-                Response response = client.sendAndAskResponse(new Request(userCommand[0].trim(), userCommand[1].trim()));
-                this.printResponse(response);
-                switch (response.getStatus()) {
-                    case ASK_OBJECT -> {
-                        SpaceMarine spaceMarine;
-                        try {
-                            spaceMarine = new AskSpaceMarine(console).build();
-                            if (!spaceMarine.validate()) throw new FIleFieldException();
-                        } catch (FIleFieldException err) {
-                            console.printError("Поля в файле не валидны! Объект не создан");
-                            continue;
+                } else if (commandManager.containsCommand(userCommand[0])) {
+                    SpaceMarine spaceMarine = commandManager.execute(commandManager.getCommand(userCommand[0]), userCommand[1]);
+                    Response response = client.sendAndAskResponse(new Request(userCommand[0], userCommand[1], spaceMarine));
+                    if (response.getStatus() != ResponseStatus.OK) {
+                        console.printError(response.getResponse());
+                    } else {
+                        this.printResponse(response);
+                    }
+                } else {
+                    console.println(OutputColors.toColor("Выполнение команды " + userCommand[0], OutputColors.YELLOW));
+                    Response response = client.sendAndAskResponse(new Request(userCommand[0].trim(), userCommand[1].trim()));
+                    this.printResponse(response);
+                    switch (response.getStatus()) {
+                        case EXIT -> throw new ExitException();
+                        case EXECUTE_SCRIPT -> {
+                            this.fileExecution(response.getResponse());
+                            ExecuteManager.popRecursion();
                         }
-                        Response newResponse = client.sendAndAskResponse(
-                                new Request(
-                                        userCommand[0].trim(),
-                                        userCommand[1].trim(),
-                                        spaceMarine));
-                        if (newResponse.getStatus() != ResponseStatus.OK) {
-                            console.printError(newResponse.getResponse());
-                        } else {
-                            this.printResponse(newResponse);
+                        default -> {
                         }
                     }
-                    case EXIT -> throw new ExitException();
-                    case EXECUTE_SCRIPT -> {
-                        this.fileExecution(response.getResponse());
-                        ExecuteManager.popRecursion();
-                    }
-                    default -> {
-                    }
                 }
+
             }
             ExecuteManager.popFile();
         } catch (FileNotFoundException fileNotFoundException) {

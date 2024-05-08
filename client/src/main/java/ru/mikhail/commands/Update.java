@@ -12,7 +12,7 @@ public class Update extends Command{
     private Printable console;
 
     public Update(Printable console){
-        super("update", "создает");
+        super("update", "обновление по id");
         this.console = console;
     }
 

@@ -120,9 +120,10 @@ public class CollectionManager {
 
     public void addElement(SpaceMarine spaceMarine) throws InvalidFormException {
         this.lastSaveTime = LocalDateTime.now();
+        if (spaceMarine != null){
         if (!spaceMarine.validate()) throw new InvalidFormException();
         spaceMarine.setId(getLastId() + 1);
-        collection.add(spaceMarine);
+        collection.add(spaceMarine);}
     }
 
     public void addElements(Collection<SpaceMarine> collection) throws InvalidFormException {

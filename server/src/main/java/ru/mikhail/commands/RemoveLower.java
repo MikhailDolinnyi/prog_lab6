@@ -37,9 +37,6 @@ public class RemoveLower extends Command {
 
         }
         try {
-            if (Objects.isNull(request.getObject())){
-                return new Response(ResponseStatus.ASK_OBJECT, "Для команды " + this.getName() + " требуется объект");
-            }
             Collection<SpaceMarine> toRemove = collectionManager.getCollection().stream()
                     .filter(Objects::nonNull)
                     .filter(studyGroup -> studyGroup.compareTo(request.getObject()) <= -1)

@@ -10,7 +10,7 @@ public class AddIfMin extends Command{
     private final Printable console;
 
     public AddIfMin(Printable console) {
-        super("add_if_min", "создает");
+        super("add_if_min", "добавление элемента, если он наименьший");
         this.console = console;
     }
 
