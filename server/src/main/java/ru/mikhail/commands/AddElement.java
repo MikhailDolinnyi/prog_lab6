@@ -31,7 +31,9 @@ public class AddElement extends Command {
     @Override
     public Response execute(Request request) throws IllegalArgumentsException, InvalidFormException {
         if (!request.getArgs().isBlank()) throw new IllegalArgumentsException();
-
+        if (request.getObject() == null){
+            return new Response(ResponseStatus.ERROR,"Не могу добавить обжект");
+        }
         collectionManager.addElement(request.getObject());
         return new Response(ResponseStatus.OK, "Объект успешно добавлен");
 

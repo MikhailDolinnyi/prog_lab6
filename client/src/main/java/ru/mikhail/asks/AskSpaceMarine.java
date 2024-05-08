@@ -5,10 +5,12 @@ import ru.mikhail.commandLine.ConsoleOutput;
 import ru.mikhail.commandLine.PrintConsole;
 import ru.mikhail.commandLine.Printable;
 import ru.mikhail.exceptions.FIleFieldException;
-import ru.mikhail.models.*;
+import ru.mikhail.models.Chapter;
+import ru.mikhail.models.Coordinates;
+import ru.mikhail.models.SpaceMarine;
+import ru.mikhail.models.Weapon;
 import ru.mikhail.utility.ExecuteManager;
 import ru.mikhail.utility.OutputColors;
-
 
 import java.time.LocalDateTime;
 

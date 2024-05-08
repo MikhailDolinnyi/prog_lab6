@@ -25,10 +25,10 @@ public class CommandManager {
 
 
     public SpaceMarine execute(Command command, String args) throws NoCommandException, InvalidFormException, IllegalArgumentsException {
-        Command command1 = commands.get(command.getName());
-        if (command1 == null) {
+        Command execute_command = commands.get(command.getName());
+        if (execute_command == null) {
             throw new NoCommandException();
         }
-        return command1.execute(args);
+        return execute_command.execute(args);
     }
 }
