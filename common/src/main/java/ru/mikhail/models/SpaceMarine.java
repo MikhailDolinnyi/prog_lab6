@@ -168,6 +168,9 @@ public class SpaceMarine implements FieldValidator, Comparable<SpaceMarine>, Ser
         if (this.achievements == null) {
             return false;
         }
+        if (!this.chapter.validate()){
+            return false;
+        }
         return this.weaponType != null;
     }
 
